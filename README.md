@@ -30,7 +30,7 @@ My classwork from [BIMM143]() at UC San Diego Winter 2023.
 
 - Class 18: [Mutational signatures of cancer mini project]().
 
-- Class 19: [Investigating pertussis resurgence mini project]().
+- Class 19: [Investigating pertussis resurgence mini project](https://github.com/patntran/bimm143_github/blob/main/class19/class19.md).
 
 
 
