@@ -9,7 +9,7 @@ My classwork from [BIMM143]() at UC San Diego Winter 2023.
 - Class 7:
 - Class 8:
 - Class 9:
-- Class 10: [code] (https://github.com/patntran/bimm143_github/blob/main/class10/class10.qmd)
+- Class 10: [code](https://github.com/patntran/bimm143_github/blob/main/class10/class10.qmd)
 
 
 
