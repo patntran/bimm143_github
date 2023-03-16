@@ -1,4 +1,4 @@
-Class 17: Mini Project
+Class 17: Vaccination Rate Mini Project
 ================
 Patrick Tran
 
