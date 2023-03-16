@@ -12,7 +12,7 @@ My classwork from [BIMM143]() at UC San Diego Winter 2023.
 
 - Class 8: [Unsupervised learning mini-project]().
 
-- Class 9:[Structural Bioinformatics AlphaFold]().
+- Class 9: [Structural Bioinformatics AlphaFold]().
 
 - Class 10: [Halloween Candy Mini-Project](https://github.com/patntran/bimm143_github/blob/main/class10/class10.qmd).
 
