@@ -28,7 +28,7 @@ My classwork from [BIMM143]() at UC San Diego Winter 2023.
 
 - Class 17: [Vaccination rate mini project](https://github.com/patntran/bimm143_github/blob/main/class17/class17.md).
 
-- Class 18: [Mutational signatures of cancer mini project]().
+- Class 18: [Mutational signatures of cancer mini project](https://github.com/patntran/bimm143_github/blob/main/class18/class18.md).
 
 - Class 19: [Investigating pertussis resurgence mini project](https://github.com/patntran/bimm143_github/blob/main/class19/class19.md).
 
