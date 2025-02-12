@@ -14,7 +14,7 @@ My classwork from [BIMM143]() at UC San Diego Winter 2023.
 
 - Class 9: [Structural Bioinformatics AlphaFold]().
 
-- Class 10: [Halloween Candy Mini-Project](class10/class10.pdf).
+- Class 10: [Halloween Candy Mini-Project](class10/class10.qmd).
 
 - Class 11: [Genome informatics and high throughput sequencing]().
 
