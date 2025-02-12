@@ -1,0 +1,190 @@
+---
+title: "Class 18: Mutational Signatures in Human Cancer"
+author: "Patrick Tran"
+format: gfm
+---
+
+# Exploring a cancer sequencing data portal
+
+> Q1. How many cancer samples are included in the dataset? 
+
+448 cancer samples.
+
+> Q2. Which is the most mutated gene? 
+
+TTN
+
+> Q3. Which is the most common treatment undergone by patients?
+
+Radiation 1
+
+# Generating mutational matrices and visualizing mutational profiles
+
+Install the `maftools` R package.
+
+```{r}
+# Install required packages
+if (!require("BiocManager")){
+    install.packages("BiocManager")
+}
+if (!require("maftools")){
+    BiocManager::install("maftools")
+}
+if (!require("BSgenome.Hsapiens.UCSC.hg19")){         # reference genome needed to
+BiocManager::install("BSgenome.Hsapiens.UCSC.hg19")   # generate mutational matrices
+}
+```
+
+Read the input data and generate mutational matrices
+
+```{r}
+# Read maf file
+library(maftools)
+coad = read.maf('data_mutations.txt')
+
+# Generate mutational matrix (SBS96 context)
+mm_coad = trinucleotideMatrix(maf = coad, prefix = 'chr', add = TRUE,
+                              ref_genome = "BSgenome.Hsapiens.UCSC.hg19")
+mm_coad = t(mm_coad$nmf_matrix)
+```
+
+For the visualization of SBS96 mutational profiles, we will make use of the `MutationalPatterns` R package
+
+```{r}
+# Install MutationalPatterns package
+if (!require("MutationalPatterns")){
+BiocManager::install("MutationalPatterns")
+}
+
+# Generate mutational profiles (4 random samples)
+library(MutationalPatterns)
+set.seed(11111) # fixing the seed for random number generation
+
+samples_to_plot = sample(1:ncol(mm_coad),4) # selecting 4 random samples
+plot_96_profile(mm_coad[,samples_to_plot], condensed = T)
+```
+
+```{r}
+# Generate mutational profiles (top 4 mutated samples and top 4 less mutated)
+mutations_in_samples = colSums(mm_coad)
+mutations_in_samples = sort(mutations_in_samples, decreasing = T)
+samples_to_plot = names(mutations_in_samples)[1:4]
+plot_96_profile(mm_coad[,samples_to_plot], condensed = T)
+```
+
+```{r}
+mutations_in_samples = sort(mutations_in_samples, decreasing = F)
+samples_to_plot = names(mutations_in_samples)[1:4]
+plot_96_profile(mm_coad[,samples_to_plot], condensed = T)
+```
+
+```{r}
+# Generate average mutational profiles
+relative_mutational_profile = apply(mm_coad, 2, prop.table) # obtained relative
+                                                            # mutational matrix
+average_mutational_profile = rowMeans(relative_mutational_profile)
+average_mutational_profile = data.frame(average_mutational_profile)
+plot_96_profile(average_mutational_profile, condensed = T)
+```
+
+# Assigning reference mutational signatures
+
+```{r}
+# Mutational signature assignment
+cosmic_signatures = get_known_signatures(source = 'COSMIC_v3.2')
+fit_res = fit_to_signatures(mm_coad, cosmic_signatures)
+
+# Top contributing signatures
+contributions = fit_res$contribution
+
+top_contributing_signatures_abs = rowMeans(contributions)
+top_contributing_signatures_abs = sort(top_contributing_signatures_abs,
+                                       decreasing = T)[1:4]
+
+## Top 4 contributing signatures (absolute values)
+top_contributing_signatures_abs
+```
+
+```{r}
+relative_contributions = apply(contributions,2,prop.table)
+top_contributing_signatures_rel = rowMeans(relative_contributions)
+top_contributing_signatures_rel = sort(top_contributing_signatures_rel,
+                                       decreasing = T)[1:4]
+
+## Top 4 contributing signatures (relative values)
+top_contributing_signatures_rel
+```
+
+```{r}
+# Mutational signature assignment strict
+fit_res_strict = fit_to_signatures_strict(mm_coad, cosmic_signatures)
+fit_res_strict = fit_res_strict$fit_res
+contributions_strict = fit_res_strict$contribution
+```
+
+# Visualizing mutational signature assignment results
+
+```{r}
+# Visualization of signature assignment results (fit_to_signatures)
+set.seed(11111)
+samples_to_plot = sample(1:ncol(mm_coad),4)
+
+plot_contribution(contributions[,samples_to_plot], mode = "absolute")
+```
+
+```{r}
+plot_contribution(contributions[,samples_to_plot], mode = "relative")
+```
+
+```{r}
+plot_contribution_heatmap(contributions, cluster_samples = F)
+```
+
+```{r}
+# Visualization of signature assignment results (strict)
+plot_contribution(contributions_strict[,samples_to_plot], mode = "absolute")
+```
+
+```{r}
+plot_contribution(contributions_strict[,samples_to_plot], mode = "relative")
+```
+```{r}
+plot_contribution_heatmap(contributions_strict, cluster_samples = F)
+```
+
+```{r}
+# Cosine similarity reconstruction vs. original mutational profile (fit_to_signatures)
+set.seed(11111)
+samples_to_plot = sample(1:ncol(mm_coad),4)
+
+plot_original_vs_reconstructed(mm_coad[,samples_to_plot],
+                               fit_res$reconstructed[,samples_to_plot], 
+                               y_intercept = 0.90)
+```
+
+```{r}
+# Cosine similarity reconstruction vs. original mutational profile (strict)
+plot_original_vs_reconstructed(mm_coad[,samples_to_plot],
+                               fit_res_strict$reconstructed[,samples_to_plot], 
+                               y_intercept = 0.90)
+```
+
+> Q4. Which is the etiology of the top absolute contributing signature for liver cancer? 
+
+Aristolochic acid exposure
+
+> Q5. Which is the most prominent mutational context for the top contributing signature in skin cancer? 
+
+C>T
+
+> Q6. The etiology of the top contributing signature for lung cancer corresponds to an endogenous cellular mechanism. 
+
+FALSE
+
+> Q7. SBS4 is one of the most common signatures found in lung cancer and is associated with tobacco smoking. 
+
+TRUE
+
+> Q8. SBS7d is one of the most common signatures in skin cancer and is associated with UV light exposure and high numbers of C>T mutations. 
+
+FALSE
