@@ -33,6 +33,18 @@ A collection of data analysis projects from my coursework in [BIMM143](https://b
 
 - Final Project: [Find-a-Gene: Database Searching, Sequence Analysis, and Functional Annotation](https://github.com/patntran/bimm143_github/blob/main/Find-A-Gene/Find_A_Gene_Project_FINAL.pdf)
 
+# BIPN 145 - Patrick Ngoc Tran
 
+This portfolio includes lab reports from my BIPN 145 neurobiology course, demonstrating my use of Python and MATLAB for statistical analysis and data visualization. These projects involved applying computational methods to interpret experimental findings and present key insights in neurobiology.
+
+- [Using EEG to Demonstrate Alpha Wave Differences Between Eyes Closed and Eyes Open](https://github.com/patntran/bimm143_github/blob/main/UCSD%20BIPN%20145%20Labs/BIPN%20145%20EEG%20Lab%20Report.pdf)
+
+- [Recording Alpha and Beta Waves in the Brain in Response to Orchestral Music of Varying Tempos and Keys](https://github.com/patntran/bimm143_github/blob/main/UCSD%20BIPN%20145%20Labs/BIPN%20145%20Final%20Project%20Lab%20Report.pdf)
+
+- [Recording of Action Potentials and Visualization of the Leech Ganglion using Intracellular Recording Techniques](https://github.com/patntran/bimm143_github/blob/main/UCSD%20BIPN%20145%20Labs/BIPN%20145%20Leech%20Lab%20Report.pdf)
+
+- [Extracellular Recording of Compound Action Potentials using the Giant Fiber System of Earthworms](https://github.com/patntran/bimm143_github/blob/main/UCSD%20BIPN%20145%20Labs/Extracellular%20Recording%20of%20Compound%20Action%20Potentials%20using%20the.pdf)
+
+- [Observing Locomotor Behavioral Responses with the Optogenetic Stimulation of Drosophila at Varying Light Source Distances](https://github.com/patntran/bimm143_github/blob/main/UCSD%20BIPN%20145%20Labs/Observing%20Locomotor%20Behavioral%20Responses%20with%20the%20Optogenetic%20Stimulation%20of%20Drosophila%20at%20Varying%20Light%20Source%20Distances.pdf)
 
 
