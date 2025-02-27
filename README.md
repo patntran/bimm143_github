@@ -1,6 +1,6 @@
 # BIMM143 - Patrick Ngoc Tran
 
-A collection of data analysis projects from my coursework in [BIMM143](https://bioboot.github.io/bimm143_W23/), showcasing my proficiency in R Studio for bioinformatics and statistical computing. These projects demonstrate my ability to process, visualize, and interpret biological data using R programming.
+A collection of data analysis projects from my coursework in [BIMM143](https://bioboot.github.io/bimm143_W23/), showcasing my proficiency in R Studio for bioinformatics and statistical computing. These projects demonstrate my ability to process, visualize, and interpret biological data using R programming. [Curriculum & Skills Covered](https://github.com/patntran/bimm143_github/blob/main/BIMM%20143%20Course%20Scope.pdf)
 
 
 - Class 5: [Data visualization with ggplot2](class05/class05.html).
