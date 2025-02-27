@@ -31,6 +31,8 @@ A collection of data analysis projects from my coursework in [BIMM143](https://b
 
 - Class 19: [Investigating pertussis resurgence mini project](https://github.com/patntran/bimm143_github/blob/main/class19/class19.md).
 
+- Final Project: [Find-a-Gene: Database Searching, Sequence Analysis, and Functional Annotation](https://github.com/patntran/bimm143_github/blob/main/Find-A-Gene/Find_A_Gene_Project_FINAL.pdf)
+
 
 
 
