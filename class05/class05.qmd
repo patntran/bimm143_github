@@ -1,0 +1,98 @@
+---
+title: "Class 5: Data Visualization"
+author: "Patrick"
+format: pdf
+---
+
+# Plotting in R
+
+R has multiple plotting and graphics systems. The most popular of which is **ggplot2**
+
+We have already played with "base" R graphics. This comes along with R "out of the box".
+
+```{r}
+plot(cars)
+```
+
+Compared to base R plots ggplot is much more verbose - I need to write more code to get simple plots like the above.
+
+To use ggplot I need to first install the ggplot2 package. To install any package in R I use the `install.packages()` command along with the package name
+
+The install is a one time only requirement. The package is now on our computer. I don't need to re-install it.
+
+However, I can't just use it without loading it up with a `library()` call.
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+ggplot(cars)
+```
+
+All ggplot figures need at least 3 things:
+
+-   data (this is the data.frame with our numbers)
+-   aesthetics ("aes", how our data maps to the plot)
+-   geoms (do want lines, points, columns, etc...)
+
+```{r}
+ggplot(data=cars) +
+    aes(x=speed, y=dist) +
+  geom_point()
+```
+
+I want a trend line to show the relationship between speed and stopping distance.
+
+```{r}
+ggplot(data=cars) +
+    aes(x=speed, y=dist) +
+  geom_point() +
+  geom_line()
+```
+
+That is not what we want
+
+```{r}
+bb <- ggplot(data=cars) +
+    aes(x=speed, y=dist) +
+  geom_point() 
+
+bb
+```
+
+```{r}
+bb+geom_smooth(method="lm", se=FALSE)
+```
+
+```{r}
+url <- "https://bioboot.github.io/bimm143_S20/class-material/up_down_expression.txt"
+genes <- read.delim(url)
+head(genes)
+```
+
+The `head()` function will print out just the first few rows (6 by default).
+
+```{r}
+head(genes)
+```
+
+```{r}
+nrow(genes)
+```
+
+```{r}
+table(genes$State)
+```
+
+```{r}
+p<- ggplot(genes)+
+  aes(Condition1, Condition2, color=State) +
+  geom_point() +
+  labs(title="Some Plot",
+       subtitle="With a subtitle")
+
+p + scale_colour_manual( values=c("blue","gray","red") )
+```
+
+
