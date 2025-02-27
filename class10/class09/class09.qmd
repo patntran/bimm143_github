@@ -1,0 +1,268 @@
+---
+title: "Class 09: Structural Bioinformatics 1"
+author: "Patrick Tran"
+format: pdf
+---
+
+## What is in the PDB anyway?
+
+The main database of biomolecular structures is called the PDB and is avaliable at www.rcsb.org
+
+Let's begin by seeing what is in this database.
+
+```{r}
+pdbstats <- read.csv("PDB.csv", row.names=1)
+head(pdbstats)
+```
+
+> Q1: What percentage of structures in the PDB are solved by X-Ray and Electron Microscopy.
+
+```{r}
+#Deal with the comma making making these non numeric...
+n.xray <- sum(as.numeric(gsub(",","",pdbstats$X.ray)))
+n.em<- sum(as.numeric(gsub(",","",pdbstats$EM)))
+n.total <- sum(as.numeric(gsub(",","",pdbstats$Total)))
+
+p.xray <- (n.xray/n.total)*100
+p.em <- (n.em/n.total)*100
+
+# and to 2 s.f
+round(p.xray, 2)
+round(p.em, 2)
+```
+
+There are `r round(n.xray)` protein structures (`r round(p.xray, 2)`%) and `r n.em` (`r round(p.em, 2)`%) EM structures in the current PDB database.
+
+> Q2: What proportion of structures in the PDB are protein?
+
+```{r}
+as.numeric(gsub(",","",pdbstats$Total))/n.total
+```
+
+
+
+> Q3: Type HIV in the PDB website search box on the home page and determine how many HIV-1 protease structures are in the current PDB?
+
+It is not straightforward to find all HIV-1 protease structures using plain text searching on the database.
+
+A wee pic of HIV-1 Protease from Molstar
+```{r}
+knitr::include_graphics("1HSG (2).png")
+# or use `![An image I like whilst learning how to break Molstar](1HSG (2).png)`
+```
+
+> Q4: Water molecules normally have 3 atoms. Why do we see just one atom per water molecule in this structure?
+
+We are currently looking at a resolution of 2.00 Å. We only see the oxygen atom. The 2 hydrogen atoms are too small to see.
+
+> Q5: There is a critical “conserved” water molecule in the binding site. Can you identify this water molecule? What residue number does this water molecule have?
+
+HOH 307
+
+## Working with structure data in R
+
+We will use the `bio3d` package for this:
+
+```{r}
+library(bio3d)
+pdb <- read.pdb("1hsg")
+pdb
+```
+
+```{r}
+head(pdb$atom)
+```
+
+What is the first residue 3 letter code?
+
+```{r}
+pdb$atom$resid[1]
+aa321(pdb$atom$resid[1])
+```
+
+> Q7. How many amino acid residues are there in this pdb object? 
+
+198
+
+> Q8. Name one of the two non-protein residues? 
+
+HOH
+
+> Q9. How many protein chains are in this structure? 
+
+2
+
+## Predicting functional motions of a single structure
+
+Let's read a new PDB structure of Adenylate Kinase (PDB code: 6s36) and perform Normal mode analysis.
+
+```{r}
+adk <- read.pdb("6s36")
+adk
+```
+
+Normal mode analysis (NMA) is a structural bioinformatics method to predict protein flexibility and potential functional motions (a.k.a. conformational changes).
+
+```{r}
+modes <- nma(adk)
+```
+
+```{r}
+plot(modes)
+```
+
+```{r}
+mktrj(modes, file="adk_m7.pdb")
+```
+
+
+# Section 4. Comparative Structure Analysis
+
+Today we are continuing where we left off last day building towards compelting the loop from biomolecular strucutral data to our new analysis mehtods like PCA and clustering.
+
+We begin with getting a single protein sequence for a protein family of interest.
+
+```{r}
+library(bio3d)
+
+aa <- get.seq("1ake_A")
+aa
+```
+
+> Q10. Which of the packages above is only found on BioConductor and not CRAN?
+
+msa
+
+> Q13. How many amino acids are in this sequence, i.e. how long is this sequence? 
+
+214
+
+Now we can use this sequence as a query to BLAST search the pDB to find similar sequence and structures.
+
+```{r}
+# Blast or hmmer search
+#b <- blast.pdb(aa)
+```
+
+I could save and load my blast results next time so I don't need to run the search every time.
+
+```{r}
+#saveRDS(b, file="blast_results.RDS")
+```
+
+```{r}
+b <- readRDS("blast_results.RDS")
+```
+
+A summary plot of our BLAST results
+
+```{r}
+hits <- plot(b)
+```
+
+```{r}
+hits$pdb.id
+```
+
+```{r}
+# Download releated PDB files
+files <- get.pdb(hits$pdb.id, path="pdbs", split=TRUE, gzip=TRUE)
+```
+
+Next we are going to align and superpose all these structures
+
+```{r}
+# Align related PDBs
+pdbs <- pdbaln(files, fit = TRUE, exefile="msa")
+pdbs
+```
+
+```{r}
+pdbs$xyz
+```
+
+## Some annotation of the PDBs we have collected
+
+```{r}
+# Vector containing PDB codes for figure axis
+ids <- basename.pdb(pdbs$id)
+
+# Draw schematic alignment
+#plot(pdbs, labels=ids)
+```
+
+And collect annotation for each entry
+
+```{r}
+anno <- pdb.annotate(ids)
+unique(anno$source)
+```
+
+```{r}
+head(anno)
+```
+
+# Principal Component Analysis
+
+Time for PCA. We will use not the `prcomp()` function from base R but the `pca()` function from the `bio3d` package as this one is designed to work nicely with biomolecular data.
+
+```{r}
+pc.xray <- pca(pdbs)
+plot(pc.xray)
+```
+
+
+We can now focus in on PC1 vs PC2
+
+```{r}
+plot(pc.xray, 1:2)
+```
+
+Lets cluster our structures
+
+```{r}
+rd <- rmsd(pdbs)
+# Structure-based clustering
+hc.rd <- hclust(dist(rmsd(pdbs)))
+grps.rd <- cutree(hc.rd, k=3)
+plot(hc.rd)
+```
+
+And now my PC plot colored by clustering group
+
+```{r}
+grps.rd <- cutree(hc.rd, k=3)
+
+plot(pc.xray, 1:2, col="grey50", bg=grps.rd, pch=21, cex=1)
+```
+
+To visualize the major structural variations in the ensemble the function `mktrj()` can be used to generate a trajectory PDB file by interpolating along a give PC (eigenvector):
+
+```{r}
+# Visualize first principal component
+mktrj(pc.xray, pc=1, file="pc_1.pdb")
+```
+
+We can now open this trajectory file in Molstar to view a wee movie of the major differences (i.e. displacement of atoms) in the structure set as we move along PC1.
+
+```{r}
+#Plotting results with ggplot2
+library(ggplot2)
+library(ggrepel)
+
+df <- data.frame(PC1=pc.xray$z[,1], 
+                 PC2=pc.xray$z[,2], 
+                 col=as.factor(grps.rd),
+                 ids=ids)
+
+p <- ggplot(df) + 
+  aes(PC1, PC2, col=col, label=ids) +
+  geom_point(size=2) +
+  geom_text_repel(max.overlaps = 20) +
+  theme(legend.position = "none")
+p
+```
+
+
+
+
