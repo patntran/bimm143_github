@@ -1,0 +1,57 @@
+---
+title: "Find A Gene"
+author: "Patrick Tran"
+format: html
+---
+
+```{r}
+library(bio3d)
+alignment <- read.fasta("sample.fasta")
+```
+
+```{r}
+ide.mat <- seqidentity(alignment)
+plot.dmat(ide.mat, color.palette=mono.colors,
+          main="Sequence Identity", xlab="Structure No.",
+          ylab="Structure No.")
+```
+
+```{r}
+heatmap(ide.mat, margins = c(11, 11))
+```
+
+```{r}
+blast <- blast.pdb(alignment)
+```
+
+```{r}
+con <- consensus(alignment)
+print(con$seq)
+```
+
+```{r}
+head(blast$hit.tbl)
+```
+
+```{r}
+head(pdb.annotate("1MWC_A"))
+```
+
+```{r}
+alignmentt <- read.fasta("Misgurnus_myoglobin_fasta.fas")
+blastt <- blast.pdb(alignmentt)
+
+```
+
+```{r}
+head(blastt$hit.tbl)
+```
+
+```{r}
+head(pdb.annotate("7DDR_A"))
+```
+
+```{r}
+rowMaxs(seqidentity(alignment))
+```
+
