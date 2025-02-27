@@ -6,13 +6,13 @@ My classwork from [BIMM143](https://bioboot.github.io/bimm143_W23/) at UC San Di
 
 - Class 5: [Data visualization with ggplot2]().
 
-- Class 6: [R functions]().
+- Class 6: [R functions](class06/class06/class06.html).
 
-- Class 7: [Machine learning for Bioinformatics 1]().
+- Class 7: [Machine learning for Bioinformatics 1](https://github.com/patntran/bimm143_github/blob/main/class07/class07.pdf).
 
-- Class 8: [Unsupervised learning mini-project]().
+- Class 8: [Unsupervised learning mini-project](class08/class08.html).
 
-- Class 9: [Structural Bioinformatics AlphaFold]().
+- Class 9: [Structural Bioinformatics AlphaFold](class09/class09.html).
 
 - Class 10: [Halloween Candy Mini-Project](class10/class10.html).
 
