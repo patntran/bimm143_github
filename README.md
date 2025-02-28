@@ -25,7 +25,7 @@ A collection of data analysis projects from my coursework in [BIMM143](https://b
 
 - Class 16: [Analyzing sequencing data in the cloud](https://github.com/patntran/bimm143_github/blob/main/class16/class16.pdf)>
 
-- Class 17: [Vaccination rate mini project](https://github.com/patntran/bimm143_github/blob/main/class17/class17.md).
+- Class 17: [Vaccination rate mini project](https://github.com/patntran/bimm143_github/blob/main/class17/class17.html).
 
 - Class 18: [Mutational signatures of cancer mini project](https://github.com/patntran/bimm143_github/blob/main/class18/class18.md).
 
